@@ -21,6 +21,7 @@ export type User = {
 };
 
 export function normalizeEmail(email: string): string {
+  email = email.trim().toLowerCase();
   return email;
 }
 

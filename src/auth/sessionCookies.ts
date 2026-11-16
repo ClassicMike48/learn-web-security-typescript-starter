@@ -4,6 +4,9 @@ const SESSION_COOKIE_NAME = "session_id";
 
 const sessionCookieOptions = {
   path: "/",
+  httpOnly: true,
+  secure: true,
+  sameSite: "lax",
 } satisfies CookieOptions;
 
 type CookieSession = {
@@ -15,7 +18,9 @@ export function setSessionCookie(
   response: Response,
   session: CookieSession,
 ): void {
-  response.cookie(SESSION_COOKIE_NAME, session.token, sessionCookieOptions);
+  const expirationDate = new Date(session.expires_at)
+  const cookieOptions = {...sessionCookieOptions, expires: expirationDate} satisfies CookieOptions;
+  response.cookie(SESSION_COOKIE_NAME, session.token, cookieOptions);
 }
 
 export function clearSessionCookie(response: Response): void {
